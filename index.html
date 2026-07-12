@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Priority Compass AI turns a task list into an intelligent priority matrix and an actionable daily plan.">
+  <title>Priority Compass AI</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="#" aria-label="Priority Compass AI home">
+      <span class="brand-mark" aria-hidden="true">✦</span>
+      <span>Priority Compass AI</span>
+    </a>
+    <span class="aws-badge">Powered by AWS</span>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="eyebrow">AI-powered productivity</div>
+      <h1>Turn a busy task list into a clear plan.</h1>
+      <p>
+        Add your tasks, tell us how much time you have, and let AI identify
+        what to do now, schedule, delegate, or reconsider.
+      </p>
+    </section>
+
+    <section class="workspace" aria-label="Priority analysis">
+      <form id="priority-form" class="input-panel">
+        <div class="panel-heading">
+          <div>
+            <p class="step-label">Step 1</p>
+            <h2>Add your tasks</h2>
+          </div>
+          <button id="load-example" class="text-button" type="button">Load example</button>
+        </div>
+
+        <label for="tasks">Tasks, one per line</label>
+        <textarea
+          id="tasks"
+          name="tasks"
+          rows="9"
+          maxlength="2000"
+          required
+          placeholder="Finish the report due tomorrow&#10;Buy groceries for the week&#10;Reply to messages"
+        >Finish the report due tomorrow
+Buy groceries for the week
+Reply to messages
+Schedule a haircut
+Record a video for the YouTube channel
+Schedule a dentist appointment</textarea>
+        <div class="field-meta">
+          <span id="task-count">6 tasks</span>
+          <span>Maximum 12 tasks</span>
+        </div>
+
+        <div class="field-grid">
+          <div>
+            <label for="available-hours">Time available today</label>
+            <select id="available-hours" name="availableHours">
+              <option value="1">1 hour</option>
+              <option value="2">2 hours</option>
+              <option value="4" selected>4 hours</option>
+              <option value="8">Full day</option>
+            </select>
+          </div>
+
+          <div>
+            <label for="main-goal">Main goal</label>
+            <input
+              id="main-goal"
+              name="mainGoal"
+              type="text"
+              maxlength="120"
+              placeholder="Example: Finish important work"
+              value="Complete the most important tasks without feeling overwhelmed"
+            >
+          </div>
+        </div>
+
+        <button id="analyze-button" class="primary-button" type="submit">
+          <span class="button-label">Analyze my priorities</span>
+          <span class="button-loader" aria-hidden="true"></span>
+        </button>
+
+        <p id="form-message" class="form-message" role="alert"></p>
+      </form>
+
+      <section id="results" class="results-panel" aria-live="polite">
+        <div class="empty-state">
+          <div class="empty-icon" aria-hidden="true">⌁</div>
+          <h2>Your priority matrix will appear here</h2>
+          <p>Submit your tasks to receive AI-generated scores, explanations, and a recommended order.</p>
+        </div>
+      </section>
+    </section>
+  </main>
+
+  <footer>
+    <p>Built for the AWS Weekend Productivity Challenge.</p>
+  </footer>
+
+  <template id="results-template">
+    <div class="results-content">
+      <div class="results-heading">
+        <div>
+          <p class="step-label">Step 2</p>
+          <h2>Your priority compass</h2>
+        </div>
+        <button id="copy-results" class="secondary-button" type="button">Copy plan</button>
+      </div>
+
+      <div class="summary-card">
+        <span class="summary-icon" aria-hidden="true">✦</span>
+        <div>
+          <h3>AI recommendation</h3>
+          <p id="ai-summary"></p>
+        </div>
+      </div>
+
+      <div id="matrix" class="matrix"></div>
+
+      <div class="execution-card">
+        <div class="execution-heading">
+          <div>
+            <p class="step-label">Step 3</p>
+            <h3>Recommended order</h3>
+          </div>
+          <span id="available-time-label" class="time-pill"></span>
+        </div>
+        <ol id="execution-list" class="execution-list"></ol>
+      </div>
+    </div>
+  </template>
+
+  <script src="app.js"></script>
+</body>
+</html>
