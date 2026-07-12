@@ -1,7 +1,5 @@
 const CONFIG = {
-  // Replace this value after creating the Lambda Function URL.
-  // Example: "https://abc123.lambda-url.us-east-1.on.aws/"
-  apiUrl: ""
+  apiUrl: "https://bdqv64boid.execute-api.us-east-1.amazonaws.com/analyze"
 };
 
 const exampleTasks = [
