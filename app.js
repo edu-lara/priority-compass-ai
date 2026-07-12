@@ -1,5 +1,5 @@
 const CONFIG = {
-  apiUrl: "https://bdqv64boid.execute-api.us-east-1.amazonaws.com/analyze"
+  apiUrl: "https://YOUR_API_ID.execute-api.us-east-1.amazonaws.com/analyze"
 };
 
 const exampleTasks = [
