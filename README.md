@@ -112,11 +112,9 @@ priority-compass-ai/
 ├── app.js
 ├── robots.txt
 ├── lambda/
-│   ├── lambda_function.py
-│   └── requirements.txt
+│   └── lambda_function.py
 ├── images/
 ├── README.md
-├── CHANGELOG.md
 ├── LICENSE
 └── .gitignore
 ```
@@ -190,7 +188,43 @@ POST /analyze
 
 Integrate it with the Lambda function.
 
-Enable CORS only for your Amplify domain.
+Configure CORS with the following values:
+
+```text
+Access-Control-Allow-Origin:
+https://YOUR_AMPLIFY_DOMAIN
+
+Access-Control-Allow-Headers:
+content-type
+
+Access-Control-Allow-Methods:
+POST
+
+Access-Control-Expose-Headers:
+Leave empty
+
+Access-Control-Max-Age:
+3600
+
+Access-Control-Allow-Credentials:
+No
+```
+
+Replace `https://YOUR_AMPLIFY_DOMAIN` with the exact AWS Amplify URL, without a trailing slash.
+
+Example:
+
+```text
+https://main.example123.amplifyapp.com
+```
+
+Use the same exact value in the Lambda environment variable:
+
+```text
+ALLOWED_ORIGIN=https://YOUR_AMPLIFY_DOMAIN
+```
+
+For HTTP APIs, API Gateway automatically handles CORS preflight requests, so you do not need to create a separate `OPTIONS` route.
 
 Configure request throttling.
 
