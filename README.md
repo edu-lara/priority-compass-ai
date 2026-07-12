@@ -2,13 +2,26 @@
 
 ![Priority Compass AI](images/july_weekend_challenge_2026_priority_compass_ai.png)
 
-AI-powered productivity application built for the AWS Weekend Productivity Challenge.
+![AWS](https://img.shields.io/badge/AWS-Serverless-orange)
+![Amazon Bedrock](https://img.shields.io/badge/Amazon-Bedrock-blue)
+![Python](https://img.shields.io/badge/Python-3.13-green)
+![License](https://img.shields.io/badge/License-MIT-yellow)
 
-Priority Compass AI analyzes a list of tasks using the Eisenhower Matrix. It assigns urgency and importance scores, classifies each task into a quadrant, explains the decision, and creates a recommended execution order.
+AI-powered productivity application built for the **AWS Weekend Productivity Challenge**.
 
-## Live application
+Priority Compass AI analyzes a list of tasks using the Eisenhower Matrix. It assigns urgency and importance scores, classifies each task into one of the four quadrants, explains the reasoning behind each decision, and generates a recommended execution order using Amazon Bedrock.
 
-The application was deployed with AWS Amplify Hosting during the challenge. The source code remains available in this repository.
+---
+
+## Live Application
+
+The application was deployed using AWS Amplify Hosting during the challenge.
+
+> **Note**
+>
+> To keep AWS costs as low as possible, the live application may be unavailable after the challenge has ended. The complete source code remains available in this repository.
+
+---
 
 ## Application
 
@@ -24,34 +37,53 @@ The application was deployed with AWS Amplify Hosting during the challenge. The 
 
 ![Priority Compass AI recommended order](images/07_app-website_recommended_order.png)
 
+---
+
 ## Architecture
 
 ![Priority Compass AI architecture](images/priority-compass-ai_diagram.png)
 
 ```text
 Browser
-  ↓
+    │
+    ▼
 AWS Amplify Hosting
-  ↓
-Amazon API Gateway
-  ↓
+    │
+    ▼
+Amazon API Gateway (HTTP API)
+    │
+    ▼
 AWS Lambda
-  ↓
-Amazon Bedrock
+    │
+    ▼
+Amazon Bedrock (Amazon Nova Lite)
 ```
 
-Amazon CloudWatch is used for Lambda logs and troubleshooting. AWS Identity and Access Management controls the permissions used by the Lambda function.
+Amazon CloudWatch is used for monitoring and troubleshooting, while AWS Identity and Access Management (IAM) controls the permissions required by the Lambda function.
 
-## AWS services
+| Layer | AWS Service |
+|--------|-------------|
+| Frontend | AWS Amplify Hosting |
+| API | Amazon API Gateway (HTTP API) |
+| Backend | AWS Lambda |
+| AI | Amazon Bedrock (Amazon Nova Lite) |
+| Monitoring | Amazon CloudWatch |
+| Security | AWS IAM |
 
-- **AWS Amplify Hosting**: hosts the static frontend.
-- **Amazon API Gateway**: exposes the `POST /analyze` endpoint and applies request throttling.
-- **AWS Lambda**: validates requests, invokes Amazon Bedrock, validates the model response, and calculates the execution order.
-- **Amazon Bedrock**: analyzes and classifies the tasks with Amazon Nova Lite.
-- **Amazon CloudWatch**: stores execution logs for troubleshooting.
-- **AWS IAM**: grants the Lambda function permission to invoke only the selected model.
+---
 
-## AWS configuration
+## AWS Services
+
+- **AWS Amplify Hosting** – Hosts the static frontend.
+- **Amazon API Gateway** – Exposes the `POST /analyze` endpoint and applies request throttling.
+- **AWS Lambda** – Validates requests, invokes Amazon Bedrock, validates the AI response, and generates the execution order.
+- **Amazon Bedrock (Amazon Nova Lite)** – Analyzes and prioritizes tasks.
+- **Amazon CloudWatch** – Stores Lambda logs.
+- **AWS IAM** – Provides least-privilege permissions.
+
+---
+
+## AWS Configuration
 
 ### AWS Amplify deployment
 
@@ -59,17 +91,19 @@ Amazon CloudWatch is used for Lambda logs and troubleshooting. AWS Identity and 
 
 ### Amazon API Gateway route
 
-![API Gateway POST analyze route](images/02_api_gateway-post_analyze.png)
+![API Gateway route](images/02_api_gateway-post_analyze.png)
 
 ### AWS Lambda environment variables
 
-![AWS Lambda environment variables](images/03_aws_lambda-variables.png)
+![Lambda variables](images/03_aws_lambda-variables.png)
 
-### AWS IAM policies
+### AWS IAM permissions
 
-![AWS IAM policies](images/04_aws_iam-policies.png)
+![IAM policy](images/04_aws_iam-policies.png)
 
-## Repository structure
+---
+
+## Repository Structure
 
 ```text
 priority-compass-ai/
@@ -78,41 +112,110 @@ priority-compass-ai/
 ├── app.js
 ├── robots.txt
 ├── lambda/
-│   └── lambda_function.py
+│   ├── lambda_function.py
+│   └── requirements.txt
 ├── images/
-│   ├── 01_aws_amplify-deployed.png
-│   ├── 02_api_gateway-post_analyze.png
-│   ├── 03_aws_lambda-variables.png
-│   ├── 04_aws_iam-policies.png
-│   ├── 05_app-website.png
-│   ├── 06_app-website_matrix.png
-│   ├── 07_app-website_recommended_order.png
-│   ├── july_weekend_challenge_2026_priority_compass_ai.png
-│   └── priority-compass-ai_diagram.png
 ├── README.md
+├── CHANGELOG.md
 ├── LICENSE
 └── .gitignore
 ```
 
-The frontend files remain in the repository root because AWS Amplify publishes the root directory.
+The frontend remains in the repository root because AWS Amplify publishes the root directory.
 
-## Run the frontend locally
+---
 
-Start a local static server:
+## Prerequisites
 
-```bash
-python3 -m http.server 8080
-```
+Before deploying the project, make sure you have:
 
-Then open:
+- An AWS account
+- Amazon Bedrock enabled
+- Access to the Amazon Nova Lite model
+- AWS Amplify Hosting
+- Python 3.13
+- Git
+
+> **Region**
+>
+> This project was developed and tested in **US East (N. Virginia) (`us-east-1`)**.
+
+---
+
+## Quick Deployment
+
+### 1. Deploy the frontend
+
+Deploy these files with AWS Amplify Hosting:
+
+- `index.html`
+- `styles.css`
+- `app.js`
+- `robots.txt`
+
+After deployment, copy your Amplify domain.
+
+### 2. Deploy the Lambda function
+
+The backend source code is located at:
 
 ```text
-http://localhost:8080
+lambda/lambda_function.py
 ```
 
-## Backend configuration
+Create a ZIP archive containing only:
 
-The frontend calls the Amazon API Gateway endpoint configured in `app.js`:
+```text
+lambda_function.py
+```
+
+Create a Python 3.13 Lambda function and upload the ZIP archive.
+
+Configure:
+
+```text
+MODEL_ID=amazon.nova-lite-v1:0
+ALLOWED_ORIGIN=https://YOUR_AMPLIFY_DOMAIN
+```
+
+### 3. Configure Amazon API Gateway
+
+Create an **HTTP API**.
+
+Create the route:
+
+```text
+POST /analyze
+```
+
+Integrate it with the Lambda function.
+
+Enable CORS only for your Amplify domain.
+
+Configure request throttling.
+
+### 4. Configure IAM
+
+Attach a policy similar to:
+
+```json
+{
+  "Version":"2012-10-17",
+  "Statement":[
+    {
+      "Effect":"Allow",
+      "Action":"bedrock:InvokeModel",
+      "Resource":"arn:aws:bedrock:*::foundation-model/amazon.nova-lite-v1:0"
+    }
+  ]
+}
+```
+
+The execution role also requires the default CloudWatch Logs permissions.
+
+### 5. Update the frontend
+
+Edit `app.js`:
 
 ```javascript
 const CONFIG = {
@@ -120,53 +223,56 @@ const CONFIG = {
 };
 ```
 
-The API URL is a public endpoint, not an AWS credential. Security is enforced through API throttling, request validation, CORS restrictions, strict Lambda validation, limited task counts, and constrained Amazon Bedrock output.
+Commit the changes and Amplify will redeploy automatically.
 
-## Lambda deployment
+---
 
-The Lambda source code is stored in:
+## Run Locally
 
-```text
-lambda/lambda_function.py
+```bash
+python3 -m http.server 8080
 ```
 
-To deploy it manually, create a ZIP file with `lambda_function.py` at the root of the archive and upload it to the existing Lambda function.
-
-The function uses these environment variables:
+Open:
 
 ```text
-MODEL_ID=amazon.nova-lite-v1:0
-ALLOWED_ORIGIN=https://YOUR_AMPLIFY_DOMAIN
+http://localhost:8080
 ```
 
-Do not commit AWS access keys, secret keys, session tokens, account credentials, or private configuration files.
+---
 
-## Cost and abuse controls
+## Cost and Abuse Controls
 
 - HTTP API instead of REST API
 - API Gateway throttling
 - Maximum of 8 tasks per request
-- Request body and field size limits
+- Request payload validation
 - Restricted CORS origin
 - Low model temperature
 - Limited output tokens
-- No database or persistent storage
+- No database
+- No persistent storage
 - No provisioned concurrency
-- No sensitive task content written to logs
+- Lambda-side AI response validation
+- No sensitive task content written to CloudWatch logs
 
-## Security notes
+---
 
-The API Gateway URL and Amplify URL are public by design and are not credentials.
+## Security Notes
 
-Never add these items to the repository:
+The API Gateway endpoint and Amplify URL are public endpoints and are **not** AWS credentials.
 
-- AWS access keys
-- AWS secret access keys
-- AWS session tokens
-- private certificates
-- billing data
-- exported CloudWatch logs containing sensitive data
+Never commit:
+
+- AWS Access Keys
+- AWS Secret Access Keys
+- AWS Session Tokens
+- Private certificates
+- Billing information
 - `.env` files containing secrets
+- Private configuration files
+
+---
 
 ## License
 
