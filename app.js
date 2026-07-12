@@ -6,11 +6,11 @@ const exampleTasks = [
   "Production server is down",
   "Submit tax return due today",
   "Prepare next month's budget",
-  "Start AWS certification study plan",
-  "Book a haircut",
+  "Book a haircut for the weekend",
   "Reply to LinkedIn connection requests",
   "Record a video for the YouTube channel",
-  "Schedule a dentist appointment"
+  "Answer non-urgent incoming phone calls",
+  "Watch random YouTube videos"
 ];
 
 const quadrantConfig = {
