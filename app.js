@@ -3,10 +3,12 @@ const CONFIG = {
 };
 
 const exampleTasks = [
-  "Finish the report due tomorrow",
-  "Buy groceries for the week",
-  "Reply to messages",
-  "Schedule a haircut",
+  "Production server is down",
+  "Submit tax return due today",
+  "Prepare next month's budget",
+  "Start AWS certification study plan",
+  "Book a haircut",
+  "Reply to LinkedIn connection requests",
   "Record a video for the YouTube channel",
   "Schedule a dentist appointment"
 ];
@@ -51,8 +53,8 @@ function validate(tasks) {
     return "Add at least one task.";
   }
 
-  if (tasks.length > 12) {
-    return "Use a maximum of 12 tasks.";
+  if (tasks.length > 8) {
+    return "Use a maximum of 8 tasks.";
   }
 
   return "";
@@ -72,8 +74,19 @@ async function requestAnalysis(payload) {
   });
 
   if (!response.ok) {
-    const message = await response.text();
-    throw new Error(message || "The analysis service returned an error.");
+    let message = "The analysis service returned an error.";
+
+    try {
+      const errorPayload = await response.json();
+      message = errorPayload.error || message;
+    } catch {
+      const text = await response.text();
+      if (text) {
+        message = text;
+      }
+    }
+
+    throw new Error(message);
   }
 
   return response.json();
@@ -307,7 +320,7 @@ form.addEventListener("submit", async (event) => {
   } catch (error) {
     console.error(error);
     formMessage.textContent =
-      "We could not analyze the tasks. Check the Lambda URL, CORS settings, and CloudWatch logs.";
+      error.message || "We could not analyze the tasks. Please try again.";
   } finally {
     setLoading(false);
   }
