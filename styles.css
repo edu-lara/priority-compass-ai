@@ -1,12 +1,10 @@
 :root {
   --bg: #f4f6fb;
-  --surface: #ffffff;
   --surface-muted: #f8f9fc;
   --text: #172033;
   --text-muted: #667085;
   --border: #e2e7f0;
   --primary: #5b4df5;
-  --primary-dark: #4739dd;
   --shadow: 0 18px 50px rgba(28, 39, 71, 0.1);
   --radius-lg: 24px;
   --radius-md: 16px;
@@ -49,6 +47,12 @@ textarea {
 
 button {
   cursor: pointer;
+}
+
+button:focus-visible,
+.brand:focus-visible {
+  outline: 3px solid rgba(91, 77, 245, 0.35);
+  outline-offset: 3px;
 }
 
 .site-header {
@@ -245,14 +249,11 @@ select:focus {
   box-shadow: 0 12px 26px rgba(91, 77, 245, 0.25);
 }
 
-.primary-button:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 16px 30px rgba(91, 77, 245, 0.3);
-}
-
 .primary-button:disabled {
   cursor: wait;
   opacity: 0.75;
+  transform: none;
+  box-shadow: none;
 }
 
 .secondary-button {
@@ -260,6 +261,11 @@ select:focus {
   border: 1px solid var(--border);
   color: var(--text);
   background: #fff;
+}
+
+.primary-button:active,
+.secondary-button:active {
+  transform: translateY(0);
 }
 
 .button-loader {
@@ -283,8 +289,45 @@ select:focus {
 .form-message {
   min-height: 20px;
   margin: 12px 0 0;
-  color: var(--danger-text);
+  color: var(--text-muted);
   font-size: 0.82rem;
+  line-height: 1.5;
+}
+
+.form-message.error {
+  color: var(--danger-text);
+}
+
+.form-message.info {
+  padding: 10px 12px;
+  border: 1px solid #bfd4ff;
+  border-radius: 10px;
+  color: var(--schedule-text);
+  background: var(--schedule-bg);
+}
+
+.form-message code {
+  padding: 1px 4px;
+  border-radius: 4px;
+  background: rgba(23, 92, 211, 0.08);
+  font-size: 0.95em;
+}
+
+.form-message span[aria-hidden="true"] {
+  margin-right: 6px;
+}
+
+.demo-badge {
+  display: inline-block;
+  padding: 6px 10px;
+  margin-right: 10px;
+  border-radius: 999px;
+  color: var(--primary);
+  background: rgba(91, 77, 245, 0.1);
+  font-size: 0.68rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
 }
 
 .results-panel {
@@ -404,7 +447,7 @@ select:focus {
 
 .task-name {
   font-size: 0.87rem;
-  font-weight: 750;
+  font-weight: 700;
   line-height: 1.4;
 }
 
@@ -486,6 +529,24 @@ select:focus {
   font-size: 0.72rem;
 }
 
+.task-name,
+.task-reason,
+.execution-task,
+.summary-card p {
+  overflow-wrap: anywhere;
+}
+
+@media (hover: hover) {
+  .primary-button:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 16px 30px rgba(91, 77, 245, 0.3);
+  }
+
+  .secondary-button:hover {
+    background: var(--surface-muted);
+  }
+}
+
 footer {
   padding: 52px 20px 34px;
   color: var(--text-muted);
@@ -528,8 +589,52 @@ footer {
     grid-template-columns: 1fr;
   }
 
-  .panel-heading,
-  .results-heading {
+  .panel-heading {
     align-items: center;
+  }
+
+  .results-heading {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .secondary-button {
+    align-self: flex-start;
+  }
+
+  .results-content {
+    padding-bottom: 16px;
+  }
+
+  .execution-list li {
+    padding: 10px 0;
+    gap: 8px;
+  }
+
+  .execution-list li::before {
+    font-size: 0.68rem;
+  }
+
+  .execution-task {
+    font-size: 0.8rem;
+  }
+
+  .execution-duration {
+    font-size: 0.68rem;
+  }
+}
+
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
   }
 }

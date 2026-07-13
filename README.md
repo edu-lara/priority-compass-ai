@@ -1,38 +1,49 @@
 # Priority Compass AI
 
-![Priority Compass AI](images/july_weekend_challenge_2026_priority_compass_ai.png)
+🌐 **Language:** **English** \| [Português](README.pt-BR.md)
 
-![AWS](https://img.shields.io/badge/AWS-Serverless-orange)
-![Amazon Bedrock](https://img.shields.io/badge/Amazon-Bedrock-blue)
+![Priority Compass
+AI](images/july_weekend_challenge_2026_priority_compass_ai.png)
+
+![AWS](https://img.shields.io/badge/AWS-Serverless-orange) ![Amazon
+Bedrock](https://img.shields.io/badge/Amazon-Bedrock-blue)
 ![Python](https://img.shields.io/badge/Python-3.13-green)
 ![License](https://img.shields.io/badge/License-MIT-yellow)
 
-| Property | Value |
-|----------|-------|
-| AWS Region | us-east-1 |
-| AI Model | Amazon Nova Lite |
-| Runtime | Python 3.13 |
-| Architecture | arm64 |
-| Frontend | HTML / CSS / JavaScript |
-| Backend | AWS Lambda |
-| API | Amazon API Gateway (HTTP API) |
-| Hosting | AWS Amplify Hosting |
+  Property       Value
+  -------------- -------------------------------
+  AWS Region     us-east-1
+  AI Model       Amazon Nova Lite
+  Runtime        Python 3.13
+  Architecture   arm64
+  Frontend       HTML / CSS / JavaScript
+  Backend        AWS Lambda
+  API            Amazon API Gateway (HTTP API)
+  Hosting        AWS Amplify Hosting
 
-AI-powered productivity application built for the **AWS Weekend Productivity Challenge**.
+AI-powered productivity application built for the **AWS Weekend
+Productivity Challenge**.
 
-Priority Compass AI analyzes a list of tasks using the Eisenhower Matrix. It assigns urgency and importance scores, classifies each task into one of the four quadrants, explains the reasoning behind each decision, and generates a recommended execution order using Amazon Bedrock.
+Priority Compass AI analyzes a list of tasks using the Eisenhower
+Matrix. It assigns urgency and importance scores, classifies each task
+into one of the four quadrants, explains the reasoning behind each
+decision, and generates a recommended execution order using Amazon
+Bedrock.
 
----
+------------------------------------------------------------------------
 
 # Live Application
 
-The application was deployed using AWS Amplify Hosting during the challenge.
+The application was deployed using AWS Amplify Hosting during the
+challenge.
 
 > **Note**
 >
-> To keep AWS costs as low as possible, the live application may be unavailable after the challenge has ended. The complete source code remains available in this repository.
+> To keep AWS costs as low as possible, the live application may be
+> unavailable after the challenge has ended. The complete source code
+> remains available in this repository.
 
----
+------------------------------------------------------------------------
 
 # Application
 
@@ -40,42 +51,48 @@ The application was deployed using AWS Amplify Hosting during the challenge.
 
 ![Priority Compass AI website](images/05_app-website.png)
 
-Users can enter up to **8 tasks**, optionally define their available time, and specify a primary goal before requesting an AI analysis.
+Users can enter up to **8 tasks**, optionally define their available
+time, and specify a primary goal before requesting an AI analysis.
 
----
+------------------------------------------------------------------------
 
 ## AI-generated priority matrix
 
 ![Priority Compass AI matrix](images/06_app-website_matrix.png)
 
-Amazon Bedrock classifies every task into one of the four Eisenhower Matrix quadrants:
+Amazon Bedrock classifies every task into one of the four Eisenhower
+Matrix quadrants:
 
-- Urgent & Important
-- Important, Not Urgent
-- Urgent, Less Important
-- Neither Urgent nor Important
+-   Urgent & Important
+-   Important, Not Urgent
+-   Urgent, Less Important
+-   Neither Urgent nor Important
 
 Each task also receives:
 
-- Importance score
-- Urgency score
-- AI explanation
+-   Importance score
+-   Urgency score
+-   AI explanation
 
----
+------------------------------------------------------------------------
 
 ## Recommended execution order
 
-![Priority Compass AI recommended order](images/07_app-website_recommended_order.png)
+![Priority Compass AI recommended
+order](images/07_app-website_recommended_order.png)
 
-After classifying all tasks, the application generates a recommended execution order together with a brief explanation describing why each task should be performed in that sequence.
+After classifying all tasks, the application generates a recommended
+execution order together with a brief explanation describing why each
+task should be performed in that sequence.
 
----
+------------------------------------------------------------------------
 
 # Architecture
 
-![Priority Compass AI architecture](images/priority-compass-ai_diagram.png)
+![Priority Compass AI
+architecture](images/priority-compass-ai_diagram.png)
 
-```text
+``` text
 Browser
     │
     ▼
@@ -91,18 +108,20 @@ AWS Lambda
 Amazon Bedrock (Amazon Nova Lite)
 ```
 
-Amazon CloudWatch is used for monitoring and troubleshooting, while AWS Identity and Access Management (IAM) controls the permissions required by the Lambda function.
+Amazon CloudWatch is used for monitoring and troubleshooting, while AWS
+Identity and Access Management (IAM) controls the permissions required
+by the Lambda function.
 
-| Layer | AWS Service |
-|--------|-------------|
-| Frontend | AWS Amplify Hosting |
-| API | Amazon API Gateway (HTTP API) |
-| Backend | AWS Lambda |
-| AI | Amazon Bedrock (Amazon Nova Lite) |
-| Monitoring | Amazon CloudWatch |
-| Security | AWS IAM |
+  Layer        AWS Service
+  ------------ -----------------------------------
+  Frontend     AWS Amplify Hosting
+  API          Amazon API Gateway (HTTP API)
+  Backend      AWS Lambda
+  AI           Amazon Bedrock (Amazon Nova Lite)
+  Monitoring   Amazon CloudWatch
+  Security     AWS IAM
 
----
+------------------------------------------------------------------------
 
 # AWS Services
 
@@ -116,9 +135,9 @@ Provides the public HTTP API endpoint.
 
 Responsible for:
 
-- Routing requests
-- Request throttling
-- CORS
+-   Routing requests
+-   Request throttling
+-   CORS
 
 ### AWS Lambda
 
@@ -126,20 +145,20 @@ Implements the backend logic.
 
 Responsibilities:
 
-- Validate requests
-- Validate task limits
-- Invoke Amazon Bedrock
-- Validate the AI response
-- Calculate the execution order
-- Return the final response
+-   Validate requests
+-   Validate task limits
+-   Invoke Amazon Bedrock
+-   Validate the AI response
+-   Calculate the execution order
+-   Return the final response
 
 ### Amazon Bedrock
 
 Uses **Amazon Nova Lite** to:
 
-- Analyze tasks
-- Classify priorities
-- Explain decisions
+-   Analyze tasks
+-   Classify priorities
+-   Explain decisions
 
 ### Amazon CloudWatch
 
@@ -147,9 +166,10 @@ Stores Lambda execution logs for troubleshooting.
 
 ### AWS IAM
 
-Provides least-privilege permissions allowing the Lambda function to invoke only the required Amazon Bedrock model.
+Provides least-privilege permissions allowing the Lambda function to
+invoke only the required Amazon Bedrock model.
 
----
+------------------------------------------------------------------------
 
 # AWS Configuration
 
@@ -157,9 +177,10 @@ Provides least-privilege permissions allowing the Lambda function to invoke only
 
 ![AWS Amplify deployed](images/01_aws_amplify-deployed.png)
 
-The frontend is automatically deployed whenever changes are pushed to the configured GitHub branch.
+The frontend is automatically deployed whenever changes are pushed to
+the configured GitHub branch.
 
----
+------------------------------------------------------------------------
 
 ## Amazon API Gateway
 
@@ -167,11 +188,11 @@ The frontend is automatically deployed whenever changes are pushed to the config
 
 The application exposes a single endpoint:
 
-```text
+``` text
 POST /analyze
 ```
 
----
+------------------------------------------------------------------------
 
 ## AWS Lambda environment variables
 
@@ -179,77 +200,80 @@ POST /analyze
 
 Environment variables:
 
-```text
+``` text
 MODEL_ID=amazon.nova-lite-v1:0
 ALLOWED_ORIGIN=https://YOUR_AMPLIFY_DOMAIN
 ```
 
 Replace `https://YOUR_AMPLIFY_DOMAIN` with your exact AWS Amplify URL.
 
----
+------------------------------------------------------------------------
 
 ## AWS IAM permissions
 
 ![IAM policy](images/04_aws_iam-policies.png)
 
-The Lambda execution role contains an inline policy that allows invoking only the Amazon Nova Lite model.
+The Lambda execution role contains an inline policy that allows invoking
+only the Amazon Nova Lite model.
 
----
+------------------------------------------------------------------------
 
 # Repository Structure
 
-```text
+``` text
 priority-compass-ai/
 ├── index.html
 ├── styles.css
 ├── app.js
 ├── robots.txt
 ├── lambda/
-│   ├── lambda_function.py
-│   └── requirements.txt
+│   └── lambda_function.py
 ├── images/
 ├── README.md
+├── README.pt-BR.md
 ├── LICENSE
 └── .gitignore
 ```
 
-The frontend files remain in the repository root because AWS Amplify publishes the root directory.
+The frontend files remain in the repository root because AWS Amplify
+publishes the root directory.
 
----
+------------------------------------------------------------------------
 
 # Prerequisites
 
 Before deploying the project, make sure you have:
 
-- An AWS account
-- Amazon Bedrock enabled
-- Access to the Amazon Nova Lite model
-- Git
-- Python 3.13
+-   An AWS account
+-   Amazon Bedrock enabled
+-   Access to the Amazon Nova Lite model
+-   Git
+-   Python 3.13
 
 > **Region**
 >
-> This project was developed and tested in **US East (N. Virginia)** (`us-east-1`).
+> This project was developed and tested in **US East (N. Virginia)**
+> (`us-east-1`).
 
----
+------------------------------------------------------------------------
 
 # Quick Deployment
 
-**Estimated deployment time:** 15–20 minutes.
+**Estimated deployment time:** 15--20 minutes.
 
----
+------------------------------------------------------------------------
 
 ## 1. Create the GitHub repository
 
 Suggested repository name:
 
-```text
+``` text
 priority-compass-ai
 ```
 
 Push all project files to the repository.
 
----
+------------------------------------------------------------------------
 
 ## 2. Deploy the frontend with AWS Amplify
 
@@ -257,7 +281,7 @@ Create an AWS Amplify application.
 
 Suggested application name:
 
-```text
+``` text
 priority-compass-ai
 ```
 
@@ -267,7 +291,7 @@ Select the branch you want to deploy.
 
 Example:
 
-```text
+``` text
 main
 ```
 
@@ -277,11 +301,11 @@ After deployment, copy your Amplify domain.
 
 Example:
 
-```text
+``` text
 https://main.example123.amplifyapp.com
 ```
 
----
+------------------------------------------------------------------------
 
 ## 3. Create the Lambda function
 
@@ -289,13 +313,13 @@ Create an AWS Lambda function using the following configuration.
 
 Suggested function name:
 
-```text
+``` text
 priority-compass-ai
 ```
 
 Configuration:
 
-```text
+``` text
 Runtime:
 Python 3.13
 
@@ -309,17 +333,18 @@ Timeout:
 10 seconds
 ```
 
-These values are sufficient for this project while keeping Lambda costs as low as possible.
+These values are sufficient for this project while keeping Lambda costs
+as low as possible.
 
 The backend source code is located at:
 
-```text
+``` text
 lambda/lambda_function.py
 ```
 
 Create a ZIP archive containing only:
 
-```text
+``` text
 lambda_function.py
 ```
 
@@ -329,26 +354,27 @@ Upload the ZIP file to the Lambda function.
 
 Configure the following environment variables:
 
-```text
+``` text
 MODEL_ID=amazon.nova-lite-v1:0
 ALLOWED_ORIGIN=https://YOUR_AMPLIFY_DOMAIN
 ```
 
-Replace `https://YOUR_AMPLIFY_DOMAIN` with your exact Amplify URL, without a trailing slash.
+Replace `https://YOUR_AMPLIFY_DOMAIN` with your exact Amplify URL,
+without a trailing slash.
 
 Example:
 
-```text
+``` text
 ALLOWED_ORIGIN=https://main.example123.amplifyapp.com
 ```
 
----
+------------------------------------------------------------------------
 
 ## 4. Configure IAM
 
 Open the Lambda function and navigate to:
 
-```text
+``` text
 Configuration
 → Permissions
 → Execution role
@@ -356,34 +382,35 @@ Configuration
 
 The execution role usually has a generated name similar to:
 
-```text
+``` text
 priority-compass-ai-role-abc123
 ```
 
 or
 
-```text
+``` text
 AWSLambdaBasicExecutionRole-119386cd...
 ```
 
-Click the execution role name to open it in AWS Identity and Access Management (IAM).
+Click the execution role name to open it in AWS Identity and Access
+Management (IAM).
 
 Choose:
 
-```text
+``` text
 Add permissions
 → Create inline policy
 ```
 
 Suggested policy name:
 
-```text
+``` text
 InvokeAmazonNovaLite
 ```
 
 Create a policy similar to:
 
-```json
+``` json
 {
   "Version": "2012-10-17",
   "Statement": [
@@ -399,9 +426,10 @@ Create a policy similar to:
 
 Attach this inline policy to the **Lambda execution role**.
 
-The execution role also requires the default CloudWatch Logs permissions automatically created by AWS Lambda.
+The execution role also requires the default CloudWatch Logs permissions
+automatically created by AWS Lambda.
 
----
+------------------------------------------------------------------------
 
 ## 5. Create Amazon API Gateway
 
@@ -409,37 +437,37 @@ Create an **HTTP API**.
 
 Suggested API name:
 
-```text
+``` text
 priority-compass-ai-api
 ```
 
 Create the route:
 
-```text
+``` text
 POST /analyze
 ```
 
 Integrate the route with the Lambda function:
 
-```text
+``` text
 priority-compass-ai
 ```
 
 Use the default stage:
 
-```text
+``` text
 $default
 ```
 
 Enable automatic deployment for the `$default` stage.
 
----
+------------------------------------------------------------------------
 
 ## 6. Configure CORS
 
 Configure CORS with the following values:
 
-```text
+``` text
 Access-Control-Allow-Origin:
 https://YOUR_AMPLIFY_DOMAIN
 
@@ -463,19 +491,20 @@ Replace `https://YOUR_AMPLIFY_DOMAIN` with your exact AWS Amplify URL.
 
 Example:
 
-```text
+``` text
 https://main.example123.amplifyapp.com
 ```
 
 Use the same value in the Lambda environment variable:
 
-```text
+``` text
 ALLOWED_ORIGIN=https://YOUR_AMPLIFY_DOMAIN
 ```
 
-For HTTP APIs, API Gateway automatically handles CORS preflight requests. No additional `OPTIONS` route is required.
+For HTTP APIs, API Gateway automatically handles CORS preflight
+requests. No additional `OPTIONS` route is required.
 
----
+------------------------------------------------------------------------
 
 ## 7. Configure request throttling
 
@@ -483,13 +512,13 @@ Open the `$default` stage.
 
 Configure route throttling for:
 
-```text
+``` text
 POST /analyze
 ```
 
 Suggested values:
 
-```text
+``` text
 Rate:
 1 request per second
 
@@ -497,21 +526,22 @@ Burst:
 2 requests
 ```
 
-These values provide sufficient protection for a public demonstration while keeping the application responsive.
+These values provide sufficient protection for a public demonstration
+while keeping the application responsive.
 
----
+------------------------------------------------------------------------
 
 ## 8. Update the frontend
 
 Open:
 
-```text
+``` text
 app.js
 ```
 
 Update the API endpoint:
 
-```javascript
+``` javascript
 const CONFIG = {
     apiUrl: "https://YOUR_API_ID.execute-api.us-east-1.amazonaws.com/analyze"
 };
@@ -521,164 +551,171 @@ Commit and push the changes.
 
 AWS Amplify automatically redeploys the application after every push.
 
----
+------------------------------------------------------------------------
 
 # Run Locally (Optional)
+>
+> When running the application locally, if `app.js` still contains the
+> placeholder value:
+>
+> `https://YOUR_API_ID.execute-api.us-east-1.amazonaws.com/analyze`
+>
+> the application automatically starts in **Demonstration Mode**. In
+> this mode, task analysis is performed using local sample rules instead
+> of Amazon Bedrock. Simply replace the placeholder with your Amazon API
+> Gateway endpoint to enable AI-powered analysis.
 
-If you would like to preview the frontend before deploying it to AWS Amplify Hosting, start a simple local web server:
+To start a simple local web server:
 
-```bash
+``` bash
 python3 -m http.server 8080
 ```
 
 Then open:
 
-```text
+``` text
 http://localhost:8080
 ```
 
-The frontend behaves the same way as it will after deployment to AWS Amplify Hosting.
+The frontend behaves the same way as it will after deployment to AWS
+Amplify Hosting.
 
-To perform a complete test, update the API endpoint in `app.js` to point to your deployed Amazon API Gateway.
+To perform a complete test, update the API endpoint in `app.js` to point
+to your deployed Amazon API Gateway.
 
----
+------------------------------------------------------------------------
 
 # Lambda Dependencies
 
 The Lambda function does not require any external Python packages.
 
-Create:
-
-```text
-lambda/requirements.txt
-```
-
-With the following content:
-
-```text
-# No external dependencies.
-# Boto3 and Botocore are provided by the AWS Lambda Python runtime.
-```
-
 The deployment package only needs:
 
-```text
+``` text
 lambda_function.py
 ```
 
----
+------------------------------------------------------------------------
 
 # Cost and Abuse Controls
 
 This project was designed with two primary goals:
 
-- Keep AWS costs as low as possible.
-- Reduce abusive usage while the application is publicly available.
+-   Keep AWS costs as low as possible.
+-   Reduce abusive usage while the application is publicly available.
 
 The following controls were implemented:
 
-- Amazon API Gateway HTTP API instead of REST API.
-- API Gateway request throttling.
-- Maximum of **8 tasks** per request.
-- Request body validation.
-- Task length validation.
-- Restricted CORS origin.
-- Lambda-side Origin validation.
-- Prompt injection resistance.
-- Low Amazon Nova Lite temperature.
-- Limited Bedrock output tokens.
-- AI response validation.
-- Deterministic execution ordering inside Lambda.
-- No database.
-- No persistent storage.
-- No provisioned concurrency.
-- No sensitive task content written to CloudWatch Logs.
+-   Amazon API Gateway HTTP API instead of REST API.
+-   API Gateway request throttling.
+-   Maximum of **8 tasks** per request.
+-   Request body validation.
+-   Task length validation.
+-   Restricted CORS origin.
+-   Lambda-side Origin validation.
+-   Prompt injection resistance.
+-   Low Amazon Nova Lite temperature.
+-   Limited Bedrock output tokens.
+-   AI response validation.
+-   Deterministic execution ordering inside Lambda.
+-   No database.
+-   No persistent storage.
+-   No provisioned concurrency.
+-   No sensitive task content written to CloudWatch Logs.
 
----
+------------------------------------------------------------------------
 
 # Cost Optimization
 
-To minimize infrastructure costs, the optional **AWS Amplify Firewall** was intentionally disabled.
+To minimize infrastructure costs, the optional **AWS Amplify Firewall**
+was intentionally disabled.
 
-Although the Amplify Firewall provides additional protection through AWS WAF, it also introduces fixed monthly charges plus request-based costs.
+Although the Amplify Firewall provides additional protection through AWS
+WAF, it also introduces fixed monthly charges plus request-based costs.
 
-For this demonstration project, the following controls already provide a good level of protection:
+For this demonstration project, the following controls already provide a
+good level of protection:
 
-- API Gateway request throttling.
-- Restricted CORS origin.
-- Lambda-side Origin validation.
-- Maximum of 8 tasks per request.
-- Request validation.
-- Payload size validation.
-- AI response validation.
-- Limited Bedrock output.
-- Least-privilege IAM permissions.
-- No persistent storage.
+-   API Gateway request throttling.
+-   Restricted CORS origin.
+-   Lambda-side Origin validation.
+-   Maximum of 8 tasks per request.
+-   Request validation.
+-   Payload size validation.
+-   AI response validation.
+-   Limited Bedrock output.
+-   Least-privilege IAM permissions.
+-   No persistent storage.
 
-These controls significantly reduce abusive usage while keeping operational costs close to zero.
+These controls significantly reduce abusive usage while keeping
+operational costs close to zero.
 
 > **Production recommendation**
 >
-> For production workloads exposed to a large public audience, consider enabling AWS WAF (through AWS Amplify Firewall or directly in front of Amazon API Gateway), implementing authentication, usage plans, monitoring, and additional rate-limiting mechanisms.
+> For production workloads exposed to a large public audience, consider
+> enabling AWS WAF (through AWS Amplify Firewall or directly in front of
+> Amazon API Gateway), implementing authentication, usage plans,
+> monitoring, and additional rate-limiting mechanisms.
 
----
+------------------------------------------------------------------------
 
 # Security Notes
 
 The following items are **public** and are **not** AWS credentials:
 
-- AWS Amplify URL
-- Amazon API Gateway endpoint
+-   AWS Amplify URL
+-   Amazon API Gateway endpoint
 
 Never commit any of the following to your repository:
 
-- AWS Access Keys
-- AWS Secret Access Keys
-- AWS Session Tokens
-- IAM credentials
-- Private certificates
-- Billing information
-- `.env` files containing secrets
-- Private configuration files
-- CloudWatch logs containing sensitive information
+-   AWS Access Keys
+-   AWS Secret Access Keys
+-   AWS Session Tokens
+-   IAM credentials
+-   Private certificates
+-   Billing information
+-   `.env` files containing secrets
+-   Private configuration files
+-   CloudWatch logs containing sensitive information
 
----
+------------------------------------------------------------------------
 
 # Resource Names
 
 The following resource names are suggested throughout this project.
 
-| Resource | Suggested Name |
-|----------|----------------|
-| GitHub repository | `priority-compass-ai` |
-| AWS Amplify application | `priority-compass-ai` |
-| AWS Lambda function | `priority-compass-ai` |
-| IAM inline policy | `InvokeAmazonNovaLite` |
-| Amazon API Gateway | `priority-compass-ai-api` |
-| API Route | `POST /analyze` |
-| API Stage | `$default` |
-| Lambda Log Group | `/aws/lambda/priority-compass-ai` |
-| Environment Variable | `MODEL_ID` |
-| Environment Variable | `ALLOWED_ORIGIN` |
-| GitHub Release Tag | `v1.0.0` |
-| GitHub Release Title | `Priority Compass AI v1.0` |
+  Resource                  Suggested Name
+  ------------------------- -----------------------------------
+  GitHub repository         `priority-compass-ai`
+  AWS Amplify application   `priority-compass-ai`
+  AWS Lambda function       `priority-compass-ai`
+  IAM inline policy         `InvokeAmazonNovaLite`
+  Amazon API Gateway        `priority-compass-ai-api`
+  API Route                 `POST /analyze`
+  API Stage                 `$default`
+  Lambda Log Group          `/aws/lambda/priority-compass-ai`
+  Environment Variable      `MODEL_ID`
+  Environment Variable      `ALLOWED_ORIGIN`
+  GitHub Release Tag        `v1.0.0`
+  GitHub Release Title      `Priority Compass AI v1.0`
 
-The IAM execution role is normally created automatically by AWS and therefore may have a generated name.
+The IAM execution role is normally created automatically by AWS and
+therefore may have a generated name.
 
----
+------------------------------------------------------------------------
 
 # Project Highlights
 
-- AI-powered task prioritization using the Eisenhower Matrix.
-- Serverless architecture.
-- Amazon Bedrock integration using Amazon Nova Lite.
-- Cost-aware design.
-- Security-first approach with multiple validation layers.
-- Fully documented deployment process.
-- Public GitHub repository.
-- Designed as a reproducible AWS Builder challenge project.
+-   AI-powered task prioritization using the Eisenhower Matrix.
+-   Serverless architecture.
+-   Amazon Bedrock integration using Amazon Nova Lite.
+-   Cost-aware design.
+-   Security-first approach with multiple validation layers.
+-   Fully documented deployment process.
+-   Public GitHub repository.
+-   Designed as a reproducible AWS Builder challenge project.
 
----
+------------------------------------------------------------------------
 
 # License
 

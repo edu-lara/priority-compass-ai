@@ -1,15 +1,18 @@
 const CONFIG = {
-  apiUrl: "https://YOUR_API_ID.execute-api.us-east-1.amazonaws.com/analyze"
+  apiUrl: "https://YOUR_API_ID.execute-api.us-east-1.amazonaws.com/analyze",
+  timeoutMs: 60000
 };
 
+const isDemoMode =
+  !CONFIG.apiUrl?.trim() ||
+  CONFIG.apiUrl.toLowerCase().includes("your_api_id");
+
 const exampleTasks = [
-  "Production server is down",
-  "Submit tax return due today",
-  "Prepare next month's budget",
-  "Start AWS certification study plan",
-  "Book a haircut for the weekend",
-  "Answer non-urgent incoming phone calls",
-  "Watch a random YouTube video",
+  "Finish the report due tomorrow",
+  "Buy groceries for the week",
+  "Reply to messages",
+  "Schedule a haircut",
+  "Record a video for the YouTube channel",
   "Schedule a dentist appointment"
 ];
 
@@ -44,8 +47,12 @@ function updateTaskCount() {
 function setLoading(isLoading) {
   analyzeButton.disabled = isLoading;
   analyzeButton.classList.toggle("loading", isLoading);
-  analyzeButton.querySelector(".button-label").textContent =
-    isLoading ? "Analyzing priorities..." : "Analyze my priorities";
+  form.setAttribute("aria-busy", String(isLoading));
+
+  const buttonLabel = analyzeButton.querySelector(".button-label");
+  buttonLabel.textContent = isLoading
+    ? "Analyzing priorities..."
+    : "Analyze my priorities";
 }
 
 function validate(tasks) {
@@ -57,42 +64,121 @@ function validate(tasks) {
     return "Use a maximum of 8 tasks.";
   }
 
+  if (tasks.some((task) => task.length > 200)) {
+    return "Each task must contain no more than 200 characters.";
+  }
+
+  const normalizedTasks = tasks.map((task) => task.toLowerCase());
+  if (new Set(normalizedTasks).size !== normalizedTasks.length) {
+    return "Remove duplicate tasks before continuing.";
+  }
+
   return "";
 }
 
+function validateAnalysisResponse(data) {
+  if (
+    !data ||
+    typeof data.summary !== "string" ||
+    !Array.isArray(data.tasks) ||
+    !Array.isArray(data.recommendedOrder)
+  ) {
+    throw new Error("The analysis service returned an invalid response.");
+  }
+
+  const validQuadrants = new Set(Object.keys(quadrantConfig));
+
+  const hasInvalidTask = data.tasks.some((task) => (
+    !task ||
+    typeof task.name !== "string" ||
+    typeof task.reason !== "string" ||
+    !Number.isFinite(Number(task.urgencyScore)) ||
+    !Number.isFinite(Number(task.importanceScore)) ||
+    !Number.isFinite(Number(task.estimatedMinutes)) ||
+    !validQuadrants.has(task.quadrant)
+  ));
+
+  const hasInvalidOrder = data.recommendedOrder.some((item) => (
+    !item ||
+    typeof item.task !== "string" ||
+    !Number.isFinite(Number(item.estimatedMinutes))
+  ));
+
+  if (hasInvalidTask || hasInvalidOrder) {
+    throw new Error("The analysis service returned incomplete task data.");
+  }
+
+  return data;
+}
+
 async function requestAnalysis(payload) {
-  if (!CONFIG.apiUrl) {
+  if (isDemoMode) {
     return createDemoAnalysis(payload);
   }
 
-  const response = await fetch(CONFIG.apiUrl, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify(payload)
-  });
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), CONFIG.timeoutMs);
 
-  if (!response.ok) {
-    let message = "The analysis service returned an error.";
+  try {
+    const response = await fetch(CONFIG.apiUrl, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(payload),
+      signal: controller.signal
+    });
 
-    try {
-      const errorPayload = await response.json();
-      message = errorPayload.error || message;
-    } catch {
-      const text = await response.text();
-      if (text) {
-        message = text;
+    clearTimeout(timeoutId);
+
+    if (!response.ok) {
+      let message = "The analysis service returned an error.";
+      let helpText = "";
+
+      try {
+        const errorPayload = await response.json();
+        message = errorPayload.error || message;
+      } catch {
+        const text = await response.text();
+        if (text) {
+          message = text;
+        }
       }
+
+      // Provide context-specific help based on error type
+      if (response.status === 400) {
+        helpText = "Please check your task input and try again.";
+      } else if (response.status === 429) {
+        helpText = "You've made too many requests. Please wait a moment and try again.";
+      } else if (response.status === 502) {
+        helpText = "The AI service is temporarily unavailable. Please try again later.";
+      } else if (response.status >= 500) {
+        helpText = "We're experiencing technical difficulties. Please try again in a few minutes.";
+      } else if (response.status >= 400) {
+        helpText = "Please check your input and try again.";
+      }
+
+      if (helpText) {
+        message = `${message} ${helpText}`;
+      }
+
+      throw new Error(message);
     }
 
-    throw new Error(message);
+    const data = await response.json();
+    return validateAnalysisResponse(data);
+  } catch (error) {
+    clearTimeout(timeoutId);
+    
+    if (error.name === "AbortError") {
+      throw new Error("The request timed out. The server may be slow or unavailable. Please check your connection and try again.");
+    }
+    
+    throw error;
   }
-
-  return response.json();
 }
 
-function createDemoAnalysis({ tasks, availableHours }) {
+function createDemoAnalysis({ tasks, availableHours, mainGoal }) {
   const demoRules = [
     {
       test: /report|tomorrow|deadline|due/i,
@@ -176,7 +262,8 @@ function createDemoAnalysis({ tasks, availableHours }) {
     window.setTimeout(() => {
       resolve({
         summary:
-          `Start with the deadline-driven task, then clear short urgent items. ` +
+          `Focus on ${mainGoal || "your most important goal"}. ` +
+          `Start with deadline-driven work, then clear short urgent items. ` +
           `Reserve focused time for important scheduled work within your ${availableHours}-hour window.`,
         tasks: analyzedTasks,
         recommendedOrder: analyzedTasks.map((task, index) => ({
@@ -251,18 +338,54 @@ function renderResults(data, availableHours) {
   const copyButton = resultsPanel.querySelector("#copy-results");
   copyButton.addEventListener("click", async () => {
     const text = buildCopyText(data);
-    await navigator.clipboard.writeText(text);
-    copyButton.textContent = "Copied";
+
+    try {
+      await navigator.clipboard.writeText(text);
+      copyButton.textContent = "Copied";
+    } catch (error) {
+      console.error(error);
+      copyButton.textContent = "Copy failed";
+    }
+
     window.setTimeout(() => {
       copyButton.textContent = "Copy plan";
     }, 1600);
   });
 
+  // Display a friendly notice when the placeholder API URL is still configured
   if (data.mode === "demo") {
-    formMessage.textContent =
-      "Demo mode is active. Add your Lambda Function URL in app.js to use Amazon Bedrock.";
+    const demoBadge = document.createElement("span");
+    demoBadge.className = "demo-badge";
+    demoBadge.textContent = "DEMO MODE";
+
+    const resultsHeading = resultsPanel.querySelector(".results-heading");
+    if (resultsHeading) {
+      resultsHeading.prepend(demoBadge);
+    }
+
+    setFormMessage(
+      '<span aria-hidden="true">✨</span> ' +
+      '<strong>Demonstration mode:</strong> this analysis uses local sample rules. ' +
+      'To enable Amazon Bedrock analysis, replace <code>YOUR_API_ID</code> in <code>app.js</code> with your API Gateway URL.',
+      "info",
+      true
+    );
   } else {
-    formMessage.textContent = "";
+    setFormMessage("");
+  }
+}
+
+function setFormMessage(message, type = "", allowHtml = false) {
+  formMessage.className = "form-message";
+
+  if (type) {
+    formMessage.classList.add(type);
+  }
+
+  if (allowHtml) {
+    formMessage.innerHTML = message;
+  } else {
+    formMessage.textContent = message;
   }
 }
 
@@ -298,7 +421,7 @@ form.addEventListener("submit", async (event) => {
 
   const tasks = getTasks();
   const validationMessage = validate(tasks);
-  formMessage.textContent = validationMessage;
+  setFormMessage(validationMessage, validationMessage ? "error" : "");
 
   if (validationMessage) {
     return;
@@ -319,11 +442,23 @@ form.addEventListener("submit", async (event) => {
     renderResults(data, availableHours);
   } catch (error) {
     console.error(error);
-    formMessage.textContent =
-      error.message || "We could not analyze the tasks. Please try again.";
+    setFormMessage(
+      error.message || "We could not analyze the tasks. Please try again.",
+      "error"
+    );
   } finally {
     setLoading(false);
   }
 });
 
 updateTaskCount();
+
+if (isDemoMode) {
+  setFormMessage(
+    '<span aria-hidden="true">✨</span> ' +
+    '<strong>Demonstration mode:</strong> this version uses local sample rules and does not call Amazon Bedrock. ' +
+    'Replace <code>YOUR_API_ID</code> in <code>app.js</code> with your API Gateway URL to enable AI analysis.',
+    "info",
+    true
+  );
+}
