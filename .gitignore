@@ -4,12 +4,23 @@
 # VS Code
 .vscode/
 
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# Variáveis de ambiente
+.env
+.env.*
+!.env.example
+
 # Logs
 *.log
 
-# Node
-node_modules/
+# Pacotes gerados para AWS Lambda
+lambda/*.zip
 
-# Temporary
+# Diretórios temporários
 tmp/
 temp/
