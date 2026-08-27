@@ -3,7 +3,7 @@
 🌐 **Language:** **English** \| [Português](README.pt-BR.md)
 
 ![Priority Compass
-AI](images/july_weekend_challenge_2026_priority_compass_ai.png)
+AI](images/weekend_challenge_priority_compass_ai.jpg)
 
 ![AWS](https://img.shields.io/badge/AWS-Serverless-orange) ![Amazon
 Bedrock](https://img.shields.io/badge/Amazon-Bedrock-blue)
