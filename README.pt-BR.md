@@ -4,8 +4,7 @@
 
 ![Priority Compass AI](images/weekend_challenge_priority_compass_ai.jpg)
 
-![AWS](https://img.shields.io/badge/AWS-Serverless-orange)
-![Amazon Bedrock](https://img.shields.io/badge/Amazon-Bedrock-blue)
+![AWS](https://img.shields.io/badge/AWS-Serverless-orange) ![Amazon Bedrock](https://img.shields.io/badge/Amazon-Bedrock-blue)
 ![Python](https://img.shields.io/badge/Python-3.13-green)
 ![License](https://img.shields.io/badge/License-MIT-yellow)
 
@@ -515,8 +514,7 @@ Atualize o endpoint da API:
 
 ```javascript
 const CONFIG = {
-  apiUrl: "https://YOUR_API_ID.execute-api.us-east-1.amazonaws.com/analyze",
-  timeoutMs: 60000
+  apiUrl: "https://YOUR_API_ID.execute-api.us-east-1.amazonaws.com/analyze"
 };
 ```
 
@@ -526,30 +524,15 @@ O AWS Amplify implantará novamente a aplicação automaticamente após cada env
 
 ---
 
-# Modo de demonstração
+# Executar localmente (Opcional)
 
-Se o arquivo `app.js` ainda contiver o valor:
-
-```text
-https://YOUR_API_ID.execute-api.us-east-1.amazonaws.com/analyze
-```
-
-a aplicação iniciará automaticamente em **Modo de Demonstração**.
-
-Nesse modo:
-
-- Nenhuma solicitação é enviada ao Amazon API Gateway.
-- O Amazon Bedrock não é invocado.
-- As tarefas são classificadas usando regras locais de exemplo.
-- A interface e o fluxo da aplicação podem ser testados sem criar recursos na AWS.
-
-O modo de demonstração serve apenas para apresentar o funcionamento da interface. Ele não interpreta o contexto das tarefas como um modelo de inteligência artificial.
-
-Para habilitar a análise real com o Amazon Bedrock, substitua `YOUR_API_ID` pela URL do seu Amazon API Gateway.
-
----
-
-# Executar localmente
+> **Observação**
+>
+> Quando a aplicação é executada localmente, se `app.js` ainda contiver o valor:
+>
+> `https://YOUR_API_ID.execute-api.us-east-1.amazonaws.com/analyze`
+>
+> a aplicação inicia automaticamente no **Modo de Demonstração**. Nesse modo, a análise de tarefas é realizada usando regras locais de exemplo em vez do Amazon Bedrock. Basta substituir o placeholder pela URL do seu Amazon API Gateway para habilitar a análise com IA.
 
 Para visualizar o frontend antes de implantá-lo no AWS Amplify Hosting, inicie um servidor web local simples:
 

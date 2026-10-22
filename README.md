@@ -2,40 +2,32 @@
 
 🌐 **Language:** **English** \| [Português](README.pt-BR.md)
 
-![Priority Compass
-AI](images/weekend_challenge_priority_compass_ai.jpg)
+![Priority Compass AI](images/weekend_challenge_priority_compass_ai.jpg)
 
-![AWS](https://img.shields.io/badge/AWS-Serverless-orange) ![Amazon
-Bedrock](https://img.shields.io/badge/Amazon-Bedrock-blue)
+![AWS](https://img.shields.io/badge/AWS-Serverless-orange) ![Amazon Bedrock](https://img.shields.io/badge/Amazon-Bedrock-blue)
 ![Python](https://img.shields.io/badge/Python-3.13-green)
 ![License](https://img.shields.io/badge/License-MIT-yellow)
 
-  Property       Value
-  -------------- -------------------------------
-  AWS Region     us-east-1
-  AI Model       Amazon Nova Lite
-  Runtime        Python 3.13
-  Architecture   arm64
-  Frontend       HTML / CSS / JavaScript
-  Backend        AWS Lambda
-  API            Amazon API Gateway (HTTP API)
-  Hosting        AWS Amplify Hosting
+| Property       | Value                                  |
+|----------------|----------------------------------------|
+| AWS Region     | us-east-1                              |
+| AI Model       | Amazon Nova Lite                       |
+| Runtime        | Python 3.13                            |
+| Architecture   | arm64                                  |
+| Frontend       | HTML / CSS / JavaScript                |
+| Backend        | AWS Lambda                             |
+| API            | Amazon API Gateway (HTTP API)          |
+| Hosting        | AWS Amplify Hosting                    |
 
-AI-powered productivity application built for the **AWS Weekend
-Productivity Challenge**.
+AI-powered productivity application built for the **AWS Weekend Productivity Challenge**.
 
-Priority Compass AI analyzes a list of tasks using the Eisenhower
-Matrix. It assigns urgency and importance scores, classifies each task
-into one of the four quadrants, explains the reasoning behind each
-decision, and generates a recommended execution order using Amazon
-Bedrock.
+Priority Compass AI analyzes a list of tasks using the Eisenhower Matrix. It assigns urgency and importance scores, classifies each task into one of the four quadrants, explains the reasoning behind each decision, and generates a recommended execution order using Amazon Bedrock.
 
-------------------------------------------------------------------------
+---
 
 # Live Application
 
-The application was deployed using AWS Amplify Hosting during the
-challenge.
+The application was deployed using AWS Amplify Hosting during the challenge.
 
 > **Note**
 >
@@ -43,7 +35,7 @@ challenge.
 > unavailable after the challenge has ended. The complete source code
 > remains available in this repository.
 
-------------------------------------------------------------------------
+---
 
 # Application
 
@@ -51,8 +43,7 @@ challenge.
 
 ![Priority Compass AI website](images/05_app-website.png)
 
-Users can enter up to **8 tasks**, optionally define their available
-time, and specify a primary goal before requesting an AI analysis.
+Users can enter up to **8 tasks**, optionally define their available time, and specify a primary goal before requesting an AI analysis.
 
 ------------------------------------------------------------------------
 
@@ -74,23 +65,20 @@ Each task also receives:
 -   Urgency score
 -   AI explanation
 
-------------------------------------------------------------------------
+---
 
 ## Recommended execution order
 
 ![Priority Compass AI recommended
 order](images/07_app-website_recommended_order.png)
 
-After classifying all tasks, the application generates a recommended
-execution order together with a brief explanation describing why each
-task should be performed in that sequence.
+After classifying all tasks, the application generates a recommended execution order together with a brief explanation describing why each task should be performed in that sequence.
 
 ------------------------------------------------------------------------
 
 # Architecture
 
-![Priority Compass AI
-architecture](images/priority-compass-ai_diagram.png)
+![Priority Compass AI architecture](images/priority-compass-ai_diagram.png)
 
 ``` text
 Browser
@@ -108,9 +96,7 @@ AWS Lambda
 Amazon Bedrock (Amazon Nova Lite)
 ```
 
-Amazon CloudWatch is used for monitoring and troubleshooting, while AWS
-Identity and Access Management (IAM) controls the permissions required
-by the Lambda function.
+Amazon CloudWatch is used for monitoring and troubleshooting, while AWS Identity and Access Management (IAM) controls the permissions required by the Lambda function.
 
   Layer        AWS Service
   ------------ -----------------------------------
@@ -166,8 +152,7 @@ Stores Lambda execution logs for troubleshooting.
 
 ### AWS IAM
 
-Provides least-privilege permissions allowing the Lambda function to
-invoke only the required Amazon Bedrock model.
+Provides least-privilege permissions allowing the Lambda function to invoke only the required Amazon Bedrock model.
 
 ------------------------------------------------------------------------
 
@@ -177,8 +162,7 @@ invoke only the required Amazon Bedrock model.
 
 ![AWS Amplify deployed](images/01_aws_amplify-deployed.png)
 
-The frontend is automatically deployed whenever changes are pushed to
-the configured GitHub branch.
+The frontend is automatically deployed whenever changes are pushed to the configured GitHub branch.
 
 ------------------------------------------------------------------------
 
@@ -213,8 +197,7 @@ Replace `https://YOUR_AMPLIFY_DOMAIN` with your exact AWS Amplify URL.
 
 ![IAM policy](images/04_aws_iam-policies.png)
 
-The Lambda execution role contains an inline policy that allows invoking
-only the Amazon Nova Lite model.
+The Lambda execution role contains an inline policy that allows invoking only the Amazon Nova Lite model.
 
 ------------------------------------------------------------------------
 
@@ -333,8 +316,7 @@ Timeout:
 10 seconds
 ```
 
-These values are sufficient for this project while keeping Lambda costs
-as low as possible.
+These values are sufficient for this project while keeping Lambda costs as low as possible.
 
 The backend source code is located at:
 
@@ -359,8 +341,7 @@ MODEL_ID=amazon.nova-lite-v1:0
 ALLOWED_ORIGIN=https://YOUR_AMPLIFY_DOMAIN
 ```
 
-Replace `https://YOUR_AMPLIFY_DOMAIN` with your exact Amplify URL,
-without a trailing slash.
+Replace `https://YOUR_AMPLIFY_DOMAIN` with your exact Amplify URL, without a trailing slash.
 
 Example:
 
@@ -392,8 +373,7 @@ or
 AWSLambdaBasicExecutionRole-119386cd...
 ```
 
-Click the execution role name to open it in AWS Identity and Access
-Management (IAM).
+Click the execution role name to open it in AWS Identity and Access Management (IAM).
 
 Choose:
 
@@ -426,8 +406,7 @@ Create a policy similar to:
 
 Attach this inline policy to the **Lambda execution role**.
 
-The execution role also requires the default CloudWatch Logs permissions
-automatically created by AWS Lambda.
+The execution role also requires the default CloudWatch Logs permissions automatically created by AWS Lambda.
 
 ------------------------------------------------------------------------
 
